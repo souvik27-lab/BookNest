@@ -5,20 +5,31 @@ import java.sql.DriverManager;
 
 public class DBConnection {
 
+    private static Connection con;
+
     public static Connection getConnection() {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection(
-"jdbc:mysql://localhost:3306/bookstore_db?useSSL=false&serverTimezone=Asia/Kolkata&allowPublicKeyRetrieval=true",
-"root",
-"root123"
 
-            );
-            System.out.println("DB Connected!");
-            return con;
+            if (con == null || con.isClosed()) {
+
+                Class.forName("com.mysql.cj.jdbc.Driver");
+
+                String host = System.getenv("MYSQLHOST");
+                String port = System.getenv("MYSQLPORT");
+                String db = System.getenv("MYSQLDATABASE");
+                String user = System.getenv("MYSQLUSER");
+                String pass = System.getenv("MYSQLPASSWORD");
+
+                String url = "jdbc:mysql://" + host + ":" + port + "/" + db +
+                        "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+
+                con = DriverManager.getConnection(url, user, pass);
+            }
+
         } catch (Exception e) {
-            System.out.println("DB Error: " + e.getMessage());
-            return null;
+            e.printStackTrace();
         }
+
+        return con;
     }
 }
