@@ -42,27 +42,32 @@ public class BookDAO {
     // =====================================
     public List<Book> getAllBooks() {
 
-        List<Book> books = new ArrayList<>();
+    List<Book> books = new ArrayList<>();
 
-        String sql = "SELECT * FROM books";
+    String sql = "SELECT * FROM books";
 
-        try {
+    try {
 
-            Connection con = DBConnection.getConnection();
-            Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery(sql);
+        Connection con = DBConnection.getConnection();
 
-            while (rs.next()) {
-                books.add(mapBook(rs));
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
+        if(con == null){
+            System.out.println("Database connection failed!");
+            return books;
         }
 
-        return books;
+        Statement st = con.createStatement();
+        ResultSet rs = st.executeQuery(sql);
+
+        while (rs.next()) {
+            books.add(mapBook(rs));
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
     }
 
+    return books;
+}
     // =====================================
     // Search Books
     // =====================================
