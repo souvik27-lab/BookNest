@@ -1110,7 +1110,8 @@ line-height:1.15;
 
 /* ================= BOOKS ================= */
 .books-grid{
-grid-template-columns:1fr;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
 gap:18px;
 }
 
